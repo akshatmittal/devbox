@@ -30,10 +30,14 @@ jobs:
       - name: Image Tags
         id: image
         shell: bash
+        env:
+          PR_SHA: ${{ github.event.pull_request.head.sha }}
         run: |
           short_sha="${GITHUB_SHA::12}"
 
-          if [[ "${GITHUB_REF_TYPE}" == "tag" ]]; then
+          if [[ "${GITHUB_EVENT_NAME}" == "pull_request" ]]; then
+            echo "tags=pr-${PR_SHA}" >> "$GITHUB_OUTPUT"
+          elif [[ "${GITHUB_REF_TYPE}" == "tag" ]]; then
             echo "tags=${GITHUB_REF_NAME},latest,sha-${short_sha}" >> "$GITHUB_OUTPUT"
           else
             echo "tags=alpha,sha-${short_sha}" >> "$GITHUB_OUTPUT"
@@ -51,5 +55,5 @@ jobs:
         with:
           imageName: ${{ env.IMAGE_NAME }}
           imageTag: ${{ steps.image.outputs.tags }}
-          push: ${{ steps.image.outputs.push }}
+          push: always
           runCmd: .devcontainer/scripts/verify-tools.sh
