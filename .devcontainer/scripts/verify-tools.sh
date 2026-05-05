@@ -19,15 +19,6 @@ claude --version
 echo -n "OpenCode: "
 opencode --version
 
-echo -n "Rustup: "
-rustup --version
-
-echo -n "Rust: "
-rustc --version
-
-echo -n "Cargo: "
-cargo --version
-
 echo -n "Foundry Forge: "
 forge --version
 

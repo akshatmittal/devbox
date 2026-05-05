@@ -3,10 +3,9 @@ FROM ubuntu:noble
 ENV DEBIAN_FRONTEND=noninteractive 
 
 ENV PNPM_HOME="/home/agent/.local/share/pnpm"
-ENV CARGO_HOME="/home/agent/.cargo"
 ENV FOUNDRY_HOME="/home/agent/.foundry"
 ENV SHELL="/bin/bash"
-ENV PATH="${PATH}:${PNPM_HOME}:${CARGO_HOME}/bin:${FOUNDRY_HOME}/bin"
+ENV PATH="${PATH}:${PNPM_HOME}:${FOUNDRY_HOME}/bin"
 
 # Basic
 RUN <<EOF
@@ -60,14 +59,6 @@ RUN <<EOF
 set -e
 /tmp/install-opencode.sh
 rm /tmp/install-opencode.sh
-EOF
-
-# Rust
-COPY --chown=agent:agent --chmod=755 scripts/install-rust.sh /tmp/install-rust.sh
-RUN <<EOF
-set -e
-/tmp/install-rust.sh
-rm /tmp/install-rust.sh
 EOF
 
 # Foundry
