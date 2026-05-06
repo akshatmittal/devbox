@@ -91,7 +91,7 @@ jobs:
           runCmd: .devcontainer/scripts/verify-tools.sh
 
   manifest:
-    name: Publish multi-arch manifest
+    name: Publish Manifest
     runs-on: ubuntu-latest
     needs: build
     steps:
