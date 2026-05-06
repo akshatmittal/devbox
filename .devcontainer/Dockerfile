@@ -3,10 +3,9 @@ FROM ubuntu:noble
 ENV DEBIAN_FRONTEND=noninteractive 
 
 ENV PNPM_HOME="/home/vscode/.local/share/pnpm"
-ENV CARGO_HOME="/home/vscode/.cargo"
 ENV FOUNDRY_HOME="/home/vscode/.foundry"
 ENV SHELL="/bin/bash"
-ENV PATH="${PATH}:${PNPM_HOME}:${CARGO_HOME}/bin:${FOUNDRY_HOME}/bin"
+ENV PATH="${PATH}:${PNPM_HOME}:${FOUNDRY_HOME}/bin"
 
 # Basic
 RUN <<EOF
@@ -62,14 +61,6 @@ set -e
 rm /tmp/install-opencode.sh
 EOF
 
-# Rust
-COPY --chown=vscode:vscode --chmod=755 scripts/install-rust.sh /tmp/install-rust.sh
-RUN <<EOF
-set -e
-/tmp/install-rust.sh
-rm /tmp/install-rust.sh
-EOF
-
 # Foundry
 COPY --chown=vscode:vscode --chmod=755 scripts/install-foundry.sh /tmp/install-foundry.sh
 RUN <<EOF
@@ -77,5 +68,8 @@ set -e
 /tmp/install-foundry.sh
 rm /tmp/install-foundry.sh
 EOF
+
+ENV NVM_DIR="/home/vscode/.nvm"
+ENV PATH="${NVM_DIR}/current/bin:${PATH}"
 
 USER root
