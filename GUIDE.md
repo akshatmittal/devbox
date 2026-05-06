@@ -23,7 +23,7 @@ In another repository, add `.devcontainer/devcontainer.json`:
 ```json
 {
   "image": "ghcr.io/akshatmittal/devbox:latest",
-  "remoteUser": "agent"
+  "remoteUser": "vscode"
 }
 ```
 
@@ -50,7 +50,7 @@ You can extend it with project-specific features and commands:
     "ghcr.io/devcontainers/features/github-cli:1": {}
   },
   "postCreateCommand": "pnpm install",
-  "remoteUser": "agent"
+  "remoteUser": "vscode"
 }
 ```
 
@@ -62,7 +62,7 @@ If Rust is required by the consuming project, add the official Rust Dev Containe
   "features": {
     "ghcr.io/devcontainers/features/rust:1": {}
   },
-  "remoteUser": "agent"
+  "remoteUser": "vscode"
 }
 ```
 
@@ -84,11 +84,11 @@ Mount them into a consuming repo's `.devcontainer/devcontainer.json`:
 {
   "image": "ghcr.io/akshatmittal/devbox:latest",
   "mounts": [
-    "source=${localEnv:HOME}/.devcontainer-agents/codex,target=/home/agent/.codex,type=bind",
-    "source=${localEnv:HOME}/.devcontainer-agents/claude,target=/home/agent/.claude,type=bind",
-    "source=${localEnv:HOME}/.devcontainer-agents/opencode,target=/home/agent/.local/share/opencode,type=bind"
+    "source=${localEnv:HOME}/.devcontainer-agents/codex,target=/home/vscode/.codex,type=bind",
+    "source=${localEnv:HOME}/.devcontainer-agents/claude,target=/home/vscode/.claude,type=bind",
+    "source=${localEnv:HOME}/.devcontainer-agents/opencode,target=/home/vscode/.local/share/opencode,type=bind"
   ],
-  "remoteUser": "agent"
+  "remoteUser": "vscode"
 }
 ```
 
@@ -97,9 +97,9 @@ If you intentionally want to share your normal host agent state, you can mount t
 ```json
 {
   "mounts": [
-    "source=${localEnv:HOME}/.codex,target=/home/agent/.codex,type=bind",
-    "source=${localEnv:HOME}/.claude,target=/home/agent/.claude,type=bind",
-    "source=${localEnv:HOME}/.local/share/opencode,target=/home/agent/.local/share/opencode,type=bind"
+    "source=${localEnv:HOME}/.codex,target=/home/vscode/.codex,type=bind",
+    "source=${localEnv:HOME}/.claude,target=/home/vscode/.claude,type=bind",
+    "source=${localEnv:HOME}/.local/share/opencode,target=/home/vscode/.local/share/opencode,type=bind"
   ]
 }
 ```

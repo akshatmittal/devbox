@@ -3,7 +3,7 @@
     "context": ".",
     "dockerfile": "Dockerfile"
   },
-  "remoteUser": "agent",
+  "remoteUser": "vscode",
   "customizations": {
     "vscode": {
       "extensions": []
