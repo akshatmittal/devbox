@@ -16,6 +16,25 @@ It includes:
 - OpenCode
 - Foundry (`forge`, `cast`, `anvil`, and `chisel`)
 
+## Image Tags
+
+Every verified build of `main` is published as a release, and the image is also
+rebuilt on a weekly schedule (Mondays, 06:00 UTC) so the bundled tooling stays
+current even when nothing has been committed. Each release publishes:
+
+- `vYYYY.MM.DD-<sha12>` — an immutable CalVer release tied to the source commit (e.g. `v2026.05.29-1a2b3c4d5e6f`)
+- `latest` — moves to the newest release
+- `sha-<sha12>` — the same build addressed by commit
+
+Each release also creates a matching `vYYYY.MM.DD-<sha12>` **git tag** in the
+repository, pointing at the exact commit that was built and verified. The
+`-<sha12>` suffix keeps multiple releases on the same day distinct.
+
+Pull request builds publish throwaway `pr-<number>` (latest build of the PR) and
+`pr-<number>-<sha12>` (a specific commit) tags, and are not released.
+Pin to a `vYYYY.MM.DD-<sha12>` tag when you need a reproducible image; use
+`latest` to always track the most recent release.
+
 ## Using This Image
 
 In another repository, add `.devcontainer/devcontainer.json`:
