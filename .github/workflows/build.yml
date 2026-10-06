@@ -23,7 +23,7 @@ env:
 jobs:
   meta:
     name: Compute Tags
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     outputs:
       tags: ${{ steps.image.outputs.tags }}
       version: ${{ steps.image.outputs.version }}
@@ -66,10 +66,10 @@ jobs:
         include:
           - arch: amd64
             platform: linux/amd64
-            runner: ubuntu-24.04
+            runner: ubuntu-26.04
           - arch: arm64
             platform: linux/arm64
-            runner: ubuntu-24.04-arm
+            runner: ubuntu-26.04-arm
     steps:
       - name: Checkout
         uses: actions/checkout@v7
@@ -114,7 +114,7 @@ jobs:
 
   manifest:
     name: Publish Manifest
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     needs: [meta, build]
     steps:
       - name: Set up Docker Buildx
@@ -145,7 +145,7 @@ jobs:
 
   release:
     name: Tag Release
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     needs: [meta, build, manifest]
     if: needs.meta.outputs.release == 'true'
     permissions:
