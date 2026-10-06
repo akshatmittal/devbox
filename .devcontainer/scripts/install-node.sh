@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-NVM_VERSION="${NVM_VERSION:-0.40.4}"
+NVM_VERSION="${NVM_VERSION:-0.40.8}"
 
 export NVM_SYMLINK_CURRENT="${NVM_SYMLINK_CURRENT:-true}"
 
