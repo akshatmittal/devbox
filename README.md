@@ -10,7 +10,7 @@ ghcr.io/akshatmittal/devbox:latest
 
 It includes:
 
-- Docker Hub `ubuntu:noble` (24.04.4)
+- Docker Hub `ubuntu:resolute` (26.04)
 - Node 24 via `nvm`
 - `pnpm` via Corepack
 - Codex CLI

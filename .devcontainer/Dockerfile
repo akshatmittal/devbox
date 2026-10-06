@@ -1,11 +1,11 @@
-FROM ubuntu:noble
+FROM ubuntu:resolute
 
 ENV DEBIAN_FRONTEND=noninteractive 
 
 ENV PNPM_HOME="/home/vscode/.local/share/pnpm"
 ENV FOUNDRY_HOME="/home/vscode/.foundry"
 ENV SHELL="/bin/bash"
-ENV PATH="${PATH}:${PNPM_HOME}/bin:${FOUNDRY_HOME}/bin"
+ENV PATH="/home/vscode/.local/bin:/home/vscode/.opencode/bin:${PATH}:${PNPM_HOME}/bin:${FOUNDRY_HOME}/bin"
 
 # Basic
 RUN <<EOF
