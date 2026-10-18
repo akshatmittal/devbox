@@ -12,13 +12,14 @@ curl -o- "https://raw.githubusercontent.com/nvm-sh/nvm/v${NVM_VERSION}/install.s
 \. "${HOME}/.nvm/nvm.sh"
 
 # Download and install Node.
-nvm install 24
-nvm alias default 24
+nvm install 26
+nvm alias default 26
 
 # Verify Node version.
 node --version
 
-# Download and install pnpm.
+# Download and install pnpm. Node 25+ no longer bundles Corepack.
+npm install -g corepack
 corepack enable pnpm
 
 # Verify pnpm version.
