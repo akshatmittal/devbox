@@ -4,9 +4,6 @@ set -euo pipefail
 echo -n "Node: "
 node --version
 
-echo -n "npm: "
-npm --version
-
 echo -n "pnpm: "
 pnpm --version
 

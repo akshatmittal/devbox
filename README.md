@@ -11,8 +11,8 @@ ghcr.io/akshatmittal/devbox:latest
 It includes:
 
 - Docker Hub `ubuntu:resolute` (26.04)
-- Node 26 via `nvm`
-- `pnpm` via Corepack
+- `pnpm` 12 via the standalone installer
+- Node 26 via `pnpm runtime`
 - Codex CLI
 - Claude Code
 - OpenCode

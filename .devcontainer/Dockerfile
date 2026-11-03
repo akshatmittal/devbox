@@ -69,7 +69,4 @@ set -e
 rm /tmp/install-foundry.sh
 EOF
 
-ENV NVM_DIR="/home/vscode/.nvm"
-ENV PATH="${NVM_DIR}/current/bin:${PATH}"
-
 USER root

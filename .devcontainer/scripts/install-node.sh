@@ -1,26 +1,15 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-NVM_VERSION="${NVM_VERSION:-0.40.8}"
-
-export NVM_SYMLINK_CURRENT="${NVM_SYMLINK_CURRENT:-true}"
-
-# Download and install nvm.
-curl -o- "https://raw.githubusercontent.com/nvm-sh/nvm/v${NVM_VERSION}/install.sh" | bash
-
-# In lieu of restarting the shell.
-\. "${HOME}/.nvm/nvm.sh"
-
-# Download and install Node.
-nvm install 26
-nvm alias default 26
-
-# Verify Node version.
-node --version
-
-# Download and install pnpm. Node 25+ no longer bundles Corepack.
-npm install -g corepack
-corepack enable pnpm
+# Install pnpm with the standalone installer.
+# The installer puts the binary in $PNPM_HOME/bin. The Dockerfile adds it to PATH.
+curl -fsSL https://get.pnpm.io/install.sh | PNPM_VERSION=12 PNPM_NO_MODIFY_PATH=1 sh -
 
 # Verify pnpm version.
 pnpm --version
+
+# Install Node with pnpm.
+pnpm runtime set node 26 -g
+
+# Verify Node version.
+node --version
