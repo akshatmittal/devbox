@@ -180,5 +180,4 @@ jobs:
           fi
           gh release create "${VERSION}" \
             --title "${VERSION}" \
-            --generate-notes \
             --latest
