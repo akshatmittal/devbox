@@ -15,7 +15,7 @@ permissions:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+  cancel-in-progress: true
 
 env:
   IMAGE_NAME: ghcr.io/${{ github.repository }}
@@ -27,33 +27,37 @@ jobs:
     outputs:
       tags: ${{ steps.image.outputs.tags }}
       version: ${{ steps.image.outputs.version }}
+      publish: ${{ steps.image.outputs.publish }}
       release: ${{ steps.image.outputs.release }}
     steps:
       - name: Image Tags
         id: image
         shell: bash
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_HEAD_REPO: ${{ github.event.pull_request.head.repo.full_name }}
         run: |
-          if [[ "${GITHUB_EVENT_NAME}" == "pull_request" ]]; then
-            short_sha="${{ github.event.pull_request.head.sha }}"
-            short_sha="${short_sha::12}"
-          else
-            short_sha="${GITHUB_SHA::12}"
-          fi
+          short_sha="${GITHUB_SHA::12}"
 
+          tags=""
           version=""
+          publish=false
           release=false
           if [[ "${GITHUB_EVENT_NAME}" == "pull_request" ]]; then
-            pr_number="${{ github.event.pull_request.number }}"
-            tags="pr-${pr_number},pr-${pr_number}-${short_sha}"
-          else
-            # CalVer release: push to main, weekly schedule, or manual run.
+            tags="pr-${PR_NUMBER},pr-${PR_NUMBER}-${short_sha}"
+            if [[ "${PR_HEAD_REPO}" == "${GITHUB_REPOSITORY}" && "${GITHUB_ACTOR}" != "dependabot[bot]" ]]; then
+              publish=true
+            fi
+          elif [[ "${GITHUB_REF}" == "refs/heads/main" ]]; then
             version="v$(date -u +'%Y.%m.%d')-${short_sha}"
             tags="${version},latest,sha-${short_sha}"
+            publish=true
             release=true
           fi
 
           echo "tags=${tags}" >> "$GITHUB_OUTPUT"
           echo "version=${version}" >> "$GITHUB_OUTPUT"
+          echo "publish=${publish}" >> "$GITHUB_OUTPUT"
           echo "release=${release}" >> "$GITHUB_OUTPUT"
 
   build:
@@ -97,6 +101,7 @@ jobs:
           echo "arch_tags=${arch_tags}" >> "$GITHUB_OUTPUT"
 
       - name: GHCR Login
+        if: needs.meta.outputs.publish == 'true'
         uses: docker/login-action@v4
         with:
           registry: ghcr.io
@@ -109,13 +114,14 @@ jobs:
           imageName: ${{ env.IMAGE_NAME }}
           imageTag: ${{ steps.image.outputs.arch_tags }}
           platform: ${{ matrix.platform }}
-          push: always
+          push: ${{ needs.meta.outputs.publish == 'true' && 'always' || 'never' }}
           runCmd: .devcontainer/scripts/verify-tools.sh
 
   manifest:
     name: Publish Manifest
     runs-on: ubuntu-26.04
     needs: [meta, build]
+    if: needs.meta.outputs.publish == 'true'
     steps:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v4
@@ -178,6 +184,14 @@ jobs:
             echo "Release ${VERSION} already exists, skipping."
             exit 0
           fi
+          {
+            echo '```text'
+            docker run --rm --user vscode \
+              --volume "${PWD}/.devcontainer/scripts:/scripts:ro" \
+              "${IMAGE_NAME}:${VERSION}" /scripts/verify-tools.sh
+            echo '```'
+          } > notes.md
           gh release create "${VERSION}" \
             --title "${VERSION}" \
+            --notes-file notes.md \
             --latest

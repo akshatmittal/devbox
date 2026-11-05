@@ -26,9 +26,9 @@ Every verified build of `main` is published as a release, and the image is also 
 - `latest` — moves to the newest release
 - `sha-<sha12>` — the same build addressed by commit
 
-Each release also creates a matching `vYYYY.MM.DD-<sha12>` **git tag** and a **GitHub Release** (with auto-generated notes), pointing at the exact commit that was built and verified. The `-<sha12>` suffix keeps multiple releases on the same day distinct.
+Each release also creates a matching `vYYYY.MM.DD-<sha12>` **git tag** and a **GitHub Release** that lists the bundled tool versions, pointing at the exact commit that was built and verified. The `-<sha12>` suffix keeps multiple releases on the same day distinct. Only `main` is released; a manual run on another branch only builds and verifies.
 
-Pull request builds publish throwaway `pr-<number>` (latest build of the PR) and `pr-<number>-<sha12>` (a specific commit) tags, and are not released. Pin to a `vYYYY.MM.DD-<sha12>` tag when you need a reproducible image; use `latest` to always track the most recent release.
+Pull request builds publish throwaway `pr-<number>` (latest build of the PR) and `pr-<number>-<sha12>` (a specific merge commit) tags, and are not released. Pull requests from forks and Dependabot only build and verify, and publish nothing. Pin to a `vYYYY.MM.DD-<sha12>` tag when you need a reproducible image; use `latest` to always track the most recent release.
 
 ## Using This Image
 
