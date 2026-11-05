@@ -30,43 +30,18 @@ EOF
 USER vscode
 
 # Node
-COPY --chown=vscode:vscode --chmod=755 scripts/install-node.sh /tmp/install-node.sh
-RUN <<EOF
-set -e
-/tmp/install-node.sh
-rm /tmp/install-node.sh
-EOF
+RUN --mount=type=bind,source=scripts/install-node.sh,target=/tmp/install-node.sh /tmp/install-node.sh
 
 # Codex
-COPY --chown=vscode:vscode --chmod=755 scripts/install-codex.sh /tmp/install-codex.sh
-RUN <<EOF
-set -e
-/tmp/install-codex.sh
-rm /tmp/install-codex.sh
-EOF
+RUN --mount=type=bind,source=scripts/install-codex.sh,target=/tmp/install-codex.sh /tmp/install-codex.sh
 
 # Claude Code
-COPY --chown=vscode:vscode --chmod=755 scripts/install-claude-code.sh /tmp/install-claude-code.sh
-RUN <<EOF
-set -e
-/tmp/install-claude-code.sh
-rm /tmp/install-claude-code.sh
-EOF
+RUN --mount=type=bind,source=scripts/install-claude-code.sh,target=/tmp/install-claude-code.sh /tmp/install-claude-code.sh
 
 # OpenCode
-COPY --chown=vscode:vscode --chmod=755 scripts/install-opencode.sh /tmp/install-opencode.sh
-RUN <<EOF
-set -e
-/tmp/install-opencode.sh
-rm /tmp/install-opencode.sh
-EOF
+RUN --mount=type=bind,source=scripts/install-opencode.sh,target=/tmp/install-opencode.sh /tmp/install-opencode.sh
 
 # Foundry
-COPY --chown=vscode:vscode --chmod=755 scripts/install-foundry.sh /tmp/install-foundry.sh
-RUN <<EOF
-set -e
-/tmp/install-foundry.sh
-rm /tmp/install-foundry.sh
-EOF
+RUN --mount=type=bind,source=scripts/install-foundry.sh,target=/tmp/install-foundry.sh /tmp/install-foundry.sh
 
 USER root
